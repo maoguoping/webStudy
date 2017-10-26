@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/artTemplate.js"></script>
+</head>
+<body>
+<div id="display"></div>
+<script id="list1" type="text/html">
+<ul>
+    {{each list as value i}}
+    <li>
+        {{value.name}}
+    </li>
+    {{/each}}
+</ul>
+</script>
+<script>
+    var htmlContent=template("list1",{list:[{name:"毛国平"},{name:"王荣卿"}]});
+    $("#display").html(htmlContent);
+</script>
+</body>
+</html>
