@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/artTemplate.js"></script>
+    <script src="../static/jquery/jquery.pagination.js"></script>
+    <style>
+        .sort-icon {
+            position: relative;
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-left: 3px;
+            vertical-align: -2px;
+            background: url("img/rise-ico.png") no-repeat 0 center;
+        }
+        .drop-ico {
+            background: url("img/drop-ico.png") no-repeat 0 center;
+        }
+    </style>
+</head>
+<body>
+<div id="display">
+
+</div>
+<div id="pagination">
+
+</div>
+<script id="teachDataList" type="text/html">
+    <table id="teachDataTable">
+        <thead>
+        <tr>
+            <th>序号<span id="indexBtn" class="sort-icon" code="index" onclick="ModelFun.sortEvent('index')"></span></th>
+            <th>区县<span id="districtBtn" class="sort-icon" code="district" onclick="ModelFun.sortEvent('district')"></span></th>
+            <th>授课次数<span id="lessonNumBtn" class="sort-icon" code="lessonNum" onclick="ModelFun.sortEvent('lessonNum')"></span></th>
+            <th>授课教师数<span id="teacherNumBtn" class="sort-icon" code="teacherNum" onclick="ModelFun.sortEvent('teacherNum')"></span></th>
+            <th>人均授课次数<span id="averageLessonNumBtn" class="sort-icon" code="averageLessonNum" onclick="ModelFun.sortEvent('averageLessonNum')"></span></th>
+            <th>课堂互动次数<span id="classActivityNumBtn" class="sort-icon" code="classActivityNum" onclick="ModelFun.sortEvent('classActivityNum')"></span></th>
+        </tr>
+        </thead>
+        <tbody>
+        {{if list.length == 0}}
+        <tr class="f6f6f6">
+            <td>——</td>
+            <td>——</td>
+            <td>——</td>
+            <td>——</td>
+            <td>——</td>
+            <td>——</td>
+        </tr>
+        {{else}}
+        {{each list as value i}}
+        <tr {{if i%2== 0}} style="background-color: #f6f6f6" {{/if}}>
+        <td>{{value.num}}</td>
+        <td>{{value.districtName}}</td>
+        <td>{{value.teachNum}}</td>
+        <td>{{value.teacherNum}}</td>
+        <td>{{value.averageTeach}}</td>
+        <td>{{value.activityNum}}</td>
+        </tr>
+        {{/each}}
+        {{/if}}
+        </tbody>
+    </table>
+</script>
+<script>
+    var Info={
+        "currentPageIndex":0
+    };
+    var ModelFun={
+        sortEvent:function (codeStr) {
+            var $sortBtn=$("#"+codeStr+"Btn");
+            var sortName=codeStr;
+            if($sortBtn.hasClass("drop-ico")){
+                $sortBtn.removeClass("drop-ico");
+                console.log(sortName);
+                console.log(0);
+            }else {
+                $sortBtn.addClass("drop-ico");
+                console.log(sortName);
+                console.log(1);
+            }
+            return false;
+        }
+    };
+    function tableInit() {
+        var numTest=Info.currentPageIndex;
+        var htmlContent = template("teachDataList", {
+            list: [
+                {
+                    "num": numTest,
+                    "districtName": "长安区",
+                    "teachNum": numTest+1,
+                    "teacherNum": numTest+2,
+                    "averageTeach": numTest+3,
+                    "activityNum": numTest+4
+                },
+                {
+                    "num": numTest,
+                    "districtName": "长安区",
+                    "teachNum": numTest+1,
+                    "teacherNum": numTest+2,
+                    "averageTeach": numTest+3,
+                    "activityNum": numTest+4
+                },
+                {
+                    "num": numTest,
+                    "districtName": "长安区",
+                    "teachNum": numTest+1,
+                    "teacherNum": numTest+2,
+                    "averageTeach": numTest+3,
+                    "activityNum": numTest+4
+                },
+                {
+                    "num": numTest,
+                    "districtName": "长安区",
+                    "teachNum": numTest+1,
+                    "teacherNum": numTest+2,
+                    "averageTeach": numTest+3,
+                    "activityNum": numTest+4
+                },
+            ]
+        });
+        $("#display").html(htmlContent);
+//        $(".sort-icon").click(function () {
+//            var $this=$(this);
+//            if($this.hasClass("drop-ico")){
+//                $this.removeClass("drop-ico");
+//                sortEvent($this.attr("code"),0)
+//            }else {
+//                sortEvent($this.attr("code"),1)
+//
+//            }
+//        });
+    }
+    $(function () {
+        var numTest=1;
+        tableInit(1);
+        var pageCount=50;  //分页总数量
+        // $("#pagination").pagination(pageCount); //简单初始化方法
+        $("#pagination").pagination(pageCount,    //分布总数量，必须参数
+            {
+                'callback': PageCallback,  //PageCallback() 为翻页调用次函数。
+                'items_per_page'      : 10,
+                'num_display_entries' : 11,
+                'num_edge_entries'    : 2,
+                'prev_text'           : "上一页",
+                'next_text'           : "下一页"
+            });
+    });
+
+    function PageCallback(page_index,jq)
+    {
+//        $.ajax({
+//            type: "POST",
+//            dataType: "text",
+//            url: '后台处理地址',      //提交到一般处理程序请求数据
+//            data: "pageIndex=" + (pageIndex) + "&pageSize=" + pageSize,          //提交两个参数：pageIndex(页面索引)，pageSize(显示条数)
+//            success: function(data) {
+//                //后台服务返回数据，重新加载数据
+//            }
+//        });
+       tableInit(page_index);
+    }
+</script>
+</body>
+</html>
