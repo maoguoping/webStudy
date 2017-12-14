@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+        iframe body{
+            zoom: 50%;
+        }
+
+    </style>
+</head>
+<body>
+<iframe src="http://www.fulibac.com" id="myiframe" scrolling="yes" onload="changeFrameHeight()" frameborder="0" width="100%" height="1000"></iframe>
+<script>
+    function changeFrameHeight(){
+        var ifm= document.getElementById("iframepage");
+        ifm.height=document.documentElement.clientHeight;
+    }
+    window.onresize=function(){
+        changeFrameHeight();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    //创建table
+    var table=document.createElement("table");
+    table.border=1;
+    table.width="100%";
+    //创建tbody
+    var tbody=document.createElement("tbody");
+    table.appendChild(tbody);
+    //创建第一行
+    tbody.insertRow(0);
+    tbody.rows[0].insertCell(0);
+    tbody.rows[0].cells[0].appendChild(document.createTextNode("1,1"));
+    tbody.rows[0].insertCell(1);
+    tbody.rows[0].cells[1].appendChild(document.createTextNode("2,1"));
+    //创建第二行
+    tbody.insertRow(1);
+    tbody.rows[1].insertCell(0);
+    tbody.rows[1].cells[0].appendChild(document.createTextNode("1,2"));
+    tbody.rows[1].insertCell(1);
+    tbody.rows[1].cells[1].appendChild(document.createTextNode("2,2"));
+    //将表格添加到文档主体中
+    document.body.appendChild(table);
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="myDiv">
+<p class="selected">selected</p>
+    <a href="" class="add"></a>
+    <a href="" class="add"></a>
+    <a href="" class="add"></a>
+    <a href="" class="add"></a>
+    <a href="" class="add"></a>
+</div>
+<button id="focusButton">焦点</button>
+<script>
+    var body=document.querySelector("body");
+    var myDiv=document.querySelector("#myDiv");
+    var selected=document.querySelector(".selected");
+    var p=document.body.querySelector("p .selected");
+    var aList=document.querySelectorAll("a");
+//    var isPselected=matchesSelector(p,".selected");
+    function matchesSelector(element,selector) {
+        if(element.matchesSelector){
+            return element.matchesSelector(selector);
+        }else if(element.msMatchesSelector){
+            return element.msMatchesSelector(selector);
+        }else if(element.mozMatchesSelector){
+            return element.mozMatchesSelector(selector);
+        }else if(element.webkitMatchesSelector){
+            return  element.webkitMatchesSelector(selector);
+        }else {
+            throw  new Error("Not supported.");
+        }
+    }
+    function traversal(callback) {
+        var i,
+            len,
+            child=element.firstElementChild;
+        while (child!=element.lastElementChild){
+            callback(child);
+            child=child.nextElementSibling;
+        }
+    }
+    var focusButton=document.getElementById("focusButton");
+    focusButton.focus();
+    console.log(document.activeElement==focusButton);
+    console.log(document.hasFocus());
+
+</script>
+</body>
+</html>

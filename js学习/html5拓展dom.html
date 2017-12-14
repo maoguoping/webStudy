@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="username current">
+    123123
+</div>
+<div class="username current">
+    1231234545
+</div>
+<div id="changeClass" class="bd user disabled"></div>
+<script>
+    //getElementsByClassName
+    var allCurrentUsernames=document.getElementsByClassName("username current");
+    alert(allCurrentUsernames.length);
+    //编辑类
+    classListFix();
+    var changeClass=document.getElementById("changeClass");
+    //删除
+    changeClass.classList.remove("disabled");
+    //添加
+    changeClass.classList.add("current");
+    //切换
+    changeClass.classList.toggle("user");
+    //确定元素中是否包含既定的类名
+    if(changeClass.classList.contains("bd")){
+        //执行操作
+    }
+    //迭代类名
+    for(var i=0,len=changeClass.classList.length;i<len;i++){
+        //操作
+    }
+    function classListFix() {
+        if (!("classList" in document.documentElement)) {
+            Object.defineProperty(HTMLElement.prototype, 'classList', {
+                get: function() {
+                    var self = this;
+                    function update(fn) {
+                        return function(value) {
+                            var classes = self.className.split(/\s+/g),
+                                index = classes.indexOf(value);
+
+                            fn(classes, index, value);
+                            self.className = classes.join(" ");
+                        }
+                    }
+
+                    return {
+                        add: update(function(classes, index, value) {
+                            if (!~index) classes.push(value);
+                        }),
+
+                        remove: update(function(classes, index) {
+                            if (~index) classes.splice(index, 1);
+                        }),
+
+                        toggle: update(function(classes, index, value) {
+                            if (~index)
+                                classes.splice(index, 1);
+                            else
+                                classes.push(value);
+                        }),
+
+                        contains: function(value) {
+                            return !!~self.className.split(/\s+/g).indexOf(value);
+                        },
+
+                        item: function(i) {
+                            return self.className.split(/\s+/g)[i] || null;
+                        }
+                    };
+                }
+            });
+        }
+
+    }
+</script>
+</body>
+</html>

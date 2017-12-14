@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../static/jquery/jquery-1.9.1.min.js"></script>
+    <script src="js/index.js"></script>
+</head>
+<body>
+<div class="page">
+
+</div>
+<script>
+    $(function () {
+       new Index($(".page"));
+        var attr=document.createAttribute("align");
+        attr.value="left";
+        var element=document.getElementsByClassName("page")[0];
+        element.setAttributeNode(attr);
+        alert(element.attributes["align"].value);
+        alert(element.getAttributeNode("align").value);
+        alert(element.getAttribute("align").value);
+    });
+</script>
+</body>
+</html>
