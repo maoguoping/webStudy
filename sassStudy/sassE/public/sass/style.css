@@ -1,0 +1,118 @@
+@charset "UTF-8";
+* {
+  margin: 0;
+  padding: 0; }
+
+html {
+  height: 100%;
+  font-size: 62.5%; }
+
+body {
+  width: 100%;
+  height: 100%;
+  max-width: 7.68rem;
+  margin: 0 auto;
+  color: #fde126;
+  font: 0.36rem Microsoft YaHei, arial, \5b8b\4f53;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  position: relative;
+  overflow: hidden; }
+
+ul, li {
+  list-style: none; }
+
+img {
+  border: 0; }
+
+a {
+  text-decoration: none; }
+
+input, label, select {
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent; }
+
+input, fieldset {
+  border: 0; }
+
+i {
+  font-style: normal; }
+
+/*轮播*/
+.carousel {
+  width: 100%;
+  margin: 0 auto;
+  background: #fff;
+  position: relative;
+  height: 260px;
+  overflow: hidden; }
+  .carousel-box {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0; }
+    .carousel-box li {
+      float: left;
+      height: auto;
+      position: relative;
+      overflow: hidden; }
+      .carousel-box li img {
+        display: block;
+        width: 100%;
+        height: 260px; }
+      .carousel-box li p {
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        color: #fff;
+        font-size: 14px;
+        padding-left: 10px;
+        box-sizing: border-box;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.4); }
+  .carousel-point {
+    position: absolute;
+    bottom: 10px;
+    right: -2px;
+    font-size: 0; }
+    .carousel-point span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 4px 4px 4px 4px;
+      background-clip: padding-box;
+      background: #fff;
+      margin-right: 12px; }
+      .carousel-point span.active {
+        background: blue; }
+
+.lay-mien {
+  width: 700px;
+  position: relative;
+  background: pink; }
+  .lay-mien #imgCarousel {
+    margin-left: -39.5px;
+    height: 150px;
+    overflow: hidden;
+    position: relative; }
+  .lay-mien .imglist {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0; }
+    .lay-mien .imglist img {
+      width: 200px;
+      height: 150px; }
+    .lay-mien .imglist a {
+      float: left;
+      width: 200px;
+      height: 150px;
+      display: block;
+      margin-left: 39.5px;
+      box-sizing: border-box; }
+      .lay-mien .imglist a.cur, .lay-mien .imglist a:hover {
+        box-shadow: 0 0 5px #b8b8b8; }
+
+/*# sourceMappingURL=style.css.map */

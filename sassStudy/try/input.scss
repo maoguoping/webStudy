@@ -1,0 +1,123 @@
+@charset "utf-8";
+.box {
+  width: 300px;
+  height: 400px;
+  &-title {
+    height: 30px;
+    line-height: 30px;
+  }
+}
+$nav-color:#f90;
+$hightlight-color:#f90;
+$hightlight-border:1px solid $hightlight-color;
+.selected{
+  border:$hightlight-border;
+}
+nav{
+  $width:100px;
+  width: $width;
+  height: 100px;
+  color: $hightlight-color;
+}
+#content{
+  article {
+    h1{ color: #333}
+    p{margin-bottom: 1.4em}
+    a{
+      color: blue;
+      &:hover{color: red}
+    }
+  }
+  aside{
+    background: #eee;
+    color:red;
+    body.ie &{color: green}
+  }
+}
+.container{
+  h1,h2,h3{margin-bottom: .8em}
+}
+article{
+  ~ article{
+    border-top: 1em dashed #ccc;
+    margin-top: 5px;
+  }
+  > section{border:1px solid #ccc;}
+  dl>{
+    dt{color: #333333}
+    dd{color: #333333}
+  }
+  nav + &{margin-top: 0}
+}
+header + p{font-size: 1.1em}
+nav{
+  border:1px solid;
+  border: {
+    top: red;
+    bottom: darkblue;
+  };
+}
+.blue-theme{@import "blue-theme";}
+.blue-theme{
+  aside{
+    background: blue; //注释不会被编译
+    color: #fff;/*注释会被编译*/
+  }
+}
+@mixin rounded-corners{
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+@mixin  no-bullets{
+  list-style: none;
+  li{
+    list-style-image: none;
+    list-style-type: none;
+    margin-left: 0px;
+  }
+}
+notice{
+  background-color: green;
+  border:2px solid #00aa00;
+  @include rounded-corners;
+}
+ul.plain{
+  color: #444;
+  @include no-bullets;
+}
+@mixin  link-colors($normal,$hover,$visted){
+  color: $normal;
+  &:hover{
+    counter-reset:$hover;
+  }
+  &:visited{
+    color: $visted;
+  }
+}
+@mixin link-colors(
+  $normal,
+  $hover: $normal,
+  $visited: $normal
+)
+{
+  color: $normal;
+  &:hover { color: $hover; }
+  &:visited { color: $visited; }
+}
+.error{
+  border:1px solid red;
+  background-color: #fdd;
+}
+.seriousError{
+  @extend  .error;
+  border-width: 3px;
+}
+//.seriousError从.error继承样式
+.error a{  //应用到.seriousError a
+  color: red;
+  font-weight: 100;
+}
+h1.error { //应用到hl.seriousError
+  font-size: 1.2rem;
+}

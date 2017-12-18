@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="../static/js/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
 </head>
 <body>
 <div id="app">
@@ -12,6 +14,52 @@
 <span id="app2" v-bind:title="message">
     鼠标悬停
 </span>
+<div id="app3">
+    <p v-if="seen">显示</p>
+</div>
+<div id="app4">
+    <ol>
+        <li v-for="todo in todos">
+            {{todo.text}}
+        </li>
+    </ol>
+</div>
+<div id="app5">
+    <p>{{message}}</p>
+    <button v-on:click="reverseMessage">逆转消息</button>
+</div>
+<div id="app6">
+    <p>{{message}}</p>
+    <input type="text" v-model="message">
+</div>
+<div id="app7">
+    <ol>
+        <!--
+      现在我们为每个 todo-item 提供 todo 对象
+      todo 对象是变量，即其内容可以是动态的。
+      我们也需要为每个组件提供一个“key”，稍后再
+      作详细解释。
+    -->
+        <todo-item v-for="item in groceryList" v-bind:todo='item' v-bind:key='item.id'>
+
+        </todo-item>
+    </ol>
+</div>
+<div id="example">
+    <p>Original message: "{{ message }}"</p>
+    <p>Computed reversed message: "{{ reversedMessage }}"</p>
+    <p>{{now}}</p>
+</div>
+<div id="demo">{{ fullName }}</div>
+<div id="watch-example">
+    <p>
+        Ask a yes/no question:
+        <input v-model="question">
+    </p>
+    <p>{{ answer }}</p>
+</div>
+<div id="class-bind" v-bind:class="classObject">class</div>
+<div id="class-list" v-bind:class="[isActive ? activeClass : '', errorClass]">1</div>
 <script>
     var app=new Vue({
         el:'#app',
@@ -19,12 +67,161 @@
             message:'Hello vue!'
         }
     });
-    var  app2=new Vue({
+    var app2=new Vue({
        el:'#app2',
        data:{
            message:'页面加载于 '+new Date().toLocaleTimeString()
        }
     });
+    var app3=new Vue({
+        el:'#app3',
+        data:{
+            seen:true
+        }
+    });
+    var app4=new Vue({
+        el:'#app4',
+        data:{
+            todos:[
+                {'text':"li1"},
+                {'text':"li2"},
+                {'text':"li3"}
+            ]
+        }
+    });
+    var app5=new Vue({
+        el:'#app5',
+        data:{
+            message:'Hello Vue.js！'
+        },
+        methods:{
+            reverseMessage:function () {
+                this.message=this.message.split('').reverse().join('');
+            }
+        }
+    });
+    var app6=new Vue({
+        el:'#app6',
+        data:{
+            message:'Hello Vue!'
+        }
+    });
+    //定义名为 todo-item 的新组件
+    Vue.component('todo-item',{
+        props:['todo'],
+        template: '<li>{{todo.text}}</li>'
+    });
+    var app7=new Vue({
+        el:'#app7',
+        data:{
+            groceryList:[
+                { id: 0, text: '蔬菜' },
+                { id: 1, text: '奶酪' },
+                { id: 2, text: '随便其它什么人吃的东西' }
+            ]
+        }
+    });
+    var vm = new Vue({
+        el: '#example',
+        data: {
+            message: 'Hello'
+        },
+        computed: {
+            // 计算属性的 getter
+            reversedMessage: function () {
+                // `this` 指向 vm 实例
+                return this.message.split('').reverse().join('')
+            },
+            now: function () {
+                return Date.now();
+            }
+        }
+    })
+    var vm2 = new Vue({
+        el: '#demo',
+        data: {
+            firstName: 'Foo',
+            lastName: 'Bar'
+        },
+        computed: {
+            fullName:  {
+                // getter
+                get: function () {
+                    return this.firstName + ' ' + this.lastName
+                },
+                // setter
+                set: function (newValue) {
+                    var names = newValue.split(' ');
+                    this.firstName = names[0];
+                    this.lastName = names[names.length - 1]
+                }
+            }
+        }
+    });
+    vm2.fullName="John Doe";
+    var watchExampleVM = new Vue({
+        el: '#watch-example',
+        data: {
+            question: '',
+            answer: 'I cannot give you an answer until you ask a question!'
+        },
+        watch: {
+            // 如果 `question` 发生改变，这个函数就会运行
+            question: function (newQuestion) {
+                this.answer = 'Waiting for you to stop typing...'
+                this.getAnswer()
+            }
+        },
+        methods: {
+            // `_.debounce` 是一个通过 Lodash 限制操作频率的函数。
+            // 在这个例子中，我们希望限制访问 yesno.wtf/api 的频率
+            // AJAX 请求直到用户输入完毕才会发出。想要了解更多关于
+            // `_.debounce` 函数 (及其近亲 `_.throttle`) 的知识，
+            // 请参考：https://lodash.com/docs#debounce
+            getAnswer: _.debounce(
+                function () {
+                    if (this.question.indexOf('?') === -1) {
+                        this.answer = 'Questions usually contain a question mark. ;-)'
+                        return
+                    }
+                    this.answer = 'Thinking...'
+                    var vm = this
+                    axios.get('https://yesno.wtf/api')
+                        .then(function (response) {
+                            vm.answer = _.capitalize(response.data.answer)
+                        })
+                        .catch(function (error) {
+                            vm.answer = 'Error! Could not reach the API. ' + error
+                        })
+                },
+                // 这是我们为判定用户停止输入等待的毫秒数
+                500
+            )
+        }
+    })
+    var classBind=new Vue({
+        el:'#class-bind',
+        data: {
+            isActive: true,
+            error: null
+        },
+        computed: {
+            classObject: function () {
+                return {
+                    active: this.isActive && !this.error,
+                    'text-danger': this.error && this.error.type === 'fatal'
+                }
+            }
+        }
+    })
+    var classList=new Vue({
+        el:'#class-list',
+        data:{
+                activeClass: 'active',
+                errorClass: 'text-danger',
+                isActive:false
+        }
+    })
 </script>
 </body>
 </html>
