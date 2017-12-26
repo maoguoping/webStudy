@@ -60,6 +60,53 @@
 </div>
 <div id="class-bind" v-bind:class="classObject">class</div>
 <div id="class-list" v-bind:class="[isActive ? activeClass : '', errorClass]">1</div>
+<div v-if="Math.random() > 0.5">
+    Now you see me
+</div>
+<div v-else>
+    Now you don't
+</div>
+<div v-if="type === 'A'">
+    A
+</div>
+<div v-else-if="type === 'B'">
+    B
+</div>
+<div v-else-if="type === 'C'">
+    C
+</div>
+<div v-else>
+    Not A/B/C
+</div>
+<h1 v-show='ok'>Hello!</h1>
+<ul id="example-1">
+    <li v-for="item in items">
+        {{ item.message }}
+    </li>
+</ul>
+<ul id="example2">
+    <li v-for="(item,index) in items">
+        {{parantMessage}}-{{index}}-{{item.message}}
+    </li>
+</ul>
+<ul id="v-for-object" class="demo">
+    <li v-for="(value, key, index) in object" :key="value.key">
+        {{ index }}. {{ key }}: {{ value }}
+    </li>
+</ul>
+<ul id="for_filter">
+    <li  v-for="n in evenNumbers">{{n}}</li>
+    <li v-for="n in even(numbers)">{{ n }}</li>
+</ul>
+<div>
+    <span v-for="n in 10">{{ n }} </span>
+</div>
+<ul>
+    <template v-for="item in items">
+        <li>{{ item.msg }}</li>
+        <li class="divider"></li>
+    </template>
+</ul>
 <script>
     var app=new Vue({
         el:'#app',
@@ -136,7 +183,7 @@
                 return Date.now();
             }
         }
-    })
+    });
     var vm2 = new Vue({
         el: '#demo',
         data: {
@@ -198,7 +245,7 @@
                 500
             )
         }
-    })
+    });
     var classBind=new Vue({
         el:'#class-bind',
         data: {
@@ -213,7 +260,7 @@
                 }
             }
         }
-    })
+    });
     var classList=new Vue({
         el:'#class-list',
         data:{
@@ -221,7 +268,78 @@
                 errorClass: 'text-danger',
                 isActive:false
         }
+    });
+    var example1 = new Vue({
+        el: '#example-1',
+        data: {
+            items: [
+                { message: 'Foo' },
+                { message: 'Bar' }
+            ]
+        }
+    });
+    var example2=new Vue({
+        el:'#example2',
+        data:{
+            parantMessage:'Parent',
+            items:[
+                {message:'Foo'},
+                {message:'Bar'}
+            ]
+        }
+    });
+    var for_object=new Vue({
+        el: '#v-for-object',
+        data: {
+            object: {
+                firstName: 'John',
+                lastName: 'Doe',
+                age: 30
+            }
+        }
+    });
+    example1.items = example1.items.filter(function (item) {
+        return item.message.match(/Foo/)
+    });
+    // Vue.set
+    //Vue.set(example1.items, indexOfItem, newValue)
+    // Array.prototype.splice
+    //example1.items.splice(indexOfItem, 1, newValue)
+    var vm = new Vue({
+        data: {
+            userProfile: {
+                name: 'Anika'
+            }
+        }
+    });
+//    Vue.set(vm.userProfile, 'age', 27);
+//    vm.$set(this.userProfile, 'age', 27)
+    vm.userProfile = Object.assign({}, this.userProfile, {
+        age: 27,
+        favoriteColor: 'Vue Green'
+    });
+    var for_filter=new Vue({
+        el:'#for_filter',
+        data: {
+            numbers: [ 1, 2, 3, 4, 5 ]
+        },
+        computed: {
+            evenNumbers: function () {
+                return this.numbers.filter(function (number) {
+                    console.log(number)
+                    return number % 2 === 0
+                })
+            }
+        },
+        methods: {
+            even: function (numbers) {
+                return numbers.filter(function (number) {
+                    return number % 2 === 0
+                })
+            }
+        }
     })
+
 </script>
 </body>
 </html>
