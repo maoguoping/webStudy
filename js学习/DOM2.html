@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        #myDiv{
+            background-color: blue;
+            width: 100px;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+<div id="myDiv" style="background-color: red;border: 1px solid black">
+
+</div>
+<script>
+    var myDiv=document.getElementById('myiv');
+    var computeredStyle=document.defaultView.getComputedStyle(myDiv,null);
+    alert(computeredStyle.backgroundColor);
+    alert(computeredStyle.backgroundColor);
+    alert(computeredStyle.backgroundColor);
+</script>
+</body>
+</html>

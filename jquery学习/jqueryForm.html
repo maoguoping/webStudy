@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../static/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="js/jquery.form.js"></script>
+</head>
+<body>
+<form id="myForm" action="#" method="post">
+    <label>名称:</label><input type="text" name="name"><br>
+    <label>地址:</label><input type="text" name="address"><br>
+    <label>自我介绍:</label><textarea name="comment" cols="30" rows="10"></textarea>
+    <input type="submit" id="test" value="提交"><br>
+    <div id="output" style="display:none"></div>
+</form>
+<script>
+    $(function () {
+       $('#myForm').ajaxForm(function () {
+            $('#output').html("提交成功！").show();
+       });
+    });
+</script>
+</body>
+</html>

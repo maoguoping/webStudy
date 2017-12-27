@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../static/js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.alterBgColor.js"></script>
+    <style>
+        .even{
+            background-color: #fff38f;
+        }
+        .odd{
+            background-color: #fffeee;
+        }
+        .selected{
+            background-color: blue;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<table id="tb1">
+    <thead>
+        <tr>
+            <th></th><th>姓名</th><th>性别</th><th>暂住地</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><input type="radio" name="rd1"></td>
+            <td>张三</td><td>男</td><td>浙江宁波</td>
+        </tr>
+        <tr>
+            <td><input type="radio" name="rd1"></td>
+            <td>李四</td><td>男</td><td>浙江杭州</td>
+        </tr>
+        <tr>
+            <td><input type="radio" name="rd1"></td>
+            <td>王五</td><td>男</td><td>浙江杭州</td>
+        </tr>
+        <tr>
+            <td><input type="radio" name="rd1"></td>
+            <td>赵六</td><td>男</td><td>浙江杭州</td>
+        </tr>
+        <tr>
+            <td><input type="radio" name="rd1"></td>
+            <td>赵七</td><td>男</td><td>浙江杭州</td>
+        </tr>
+        <tr>
+            <td><input type="radio" name="rd1"></td>
+            <td>赵八</td><td>男</td><td>浙江杭州</td>
+        </tr>
+    </tbody>
+</table>
+<table id="tb2">
+    <thead>
+    <tr>
+        <th></th><th>姓名</th><th>性别</th><th>暂住地</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><input type="checkbox" name="cb2"></td>
+        <td>张三</td><td>男</td><td>浙江宁波</td>
+    </tr>
+    <tr>
+        <td><input type="checkbox" name="cb2"></td>
+        <td>李四</td><td>男</td><td>浙江杭州</td>
+    </tr>
+    <tr>
+        <td><input type="checkbox" name="cb2"></td>
+        <td>王五</td><td>男</td><td>浙江杭州</td>
+    </tr>
+    <tr>
+        <td><input type="checkbox" name="cb2"></td>
+        <td>赵六</td><td>男</td><td>浙江杭州</td>
+    </tr>
+    <tr>
+        <td><input type="checkbox" name="cb2"></td>
+        <td>赵七</td><td>男</td><td>浙江杭州</td>
+    </tr>
+    <tr>
+        <td><input type="checkbox" name="cb2"></td>
+        <td>赵八</td><td>男</td><td>浙江杭州</td>
+    </tr>
+    </tbody>
+</table>
+<input type="text" id="filterName">
+<table id="tb3">
+    <thead>
+    <tr>
+        <th>姓名</th><th>性别</th><th>暂住地</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="parent" id="row_01">
+        <td colspan="3">前台设计组</td>
+    </tr>
+    <tr class="child_row_01">
+        <td>张三</td><td>男</td><td>浙江宁波</td>
+    </tr>
+    <tr class="child_row_01">
+        <td>李四</td><td>男</td><td>浙江杭州</td>
+    </tr>
+    <tr class="parent" id="row_02">
+        <td colspan="3">前台开发组</td>
+    </tr>
+    <tr class="child_row_02">
+        <td>王五</td><td>男</td><td>浙江杭州</td>
+    </tr>
+    <tr class="child_row_02">
+        <td>赵六</td><td>男</td><td>浙江杭州</td>
+    </tr>
+    <tr class="parent" id="row_03">
+        <td colspan="3">后台开发组</td>
+    </tr>
+    <tr class="child_row_03">
+        <td>赵七</td><td>男</td><td>浙江杭州</td>
+    </tr>
+    <tr class="child_row_03">
+        <td>赵八</td><td>男</td><td>浙江杭州</td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    $(function () {
+        $("tbody>tr:odd").addClass("odd");
+        $("tbody>tr:even").addClass("even");
+        $("#tb1 tr:contains('王五')").addClass("selected").find(":input").attr('checked',true);
+        $("#tb1 table :radio:checked").parent().parent().addClass('selected');
+        $("#tb1 tbody>tr").click(function () {
+           $(this).addClass('selected')
+               .siblings().removeClass('selected')
+               .end()
+               .find(':radio').attr('checked',true);
+        });
+//        $("#tb2 tbody>tr").click(function () {
+//            var hasSelected=$(this).hasClass('selected');
+//            $(this)[hasSelected?"removeClass":"addClass"]('selected').find(':radio').attr('checked',!hasSelected);
+//        });
+//        $("#tb2 table :checkbox:checked").parent().parent().addClass('selected');
+        $("#tb2").alterBgColor().find("th").css("color","red");
+        $("#tb3 tr.parent").click(function () {
+            $(this).toggleClass("selected")
+                .siblings('.child_'+this.id).toggle();
+        });
+        $("#filterName").keyup(function () {
+            var name=$(this).val().trim();
+            $("#tb3 tbody tr").hide().filter(":contains("+name+")").show();
+        }).keyup();
+        jQuery.extend({
+            namePlus:function (name) {
+                return name+"By Mgp";
+            },
+            age:function (age) {
+                return age;
+            }
+        });
+        alert( jQuery.namePlus("毛国平"));
+    });
+</script>
+</body>
+</html>
