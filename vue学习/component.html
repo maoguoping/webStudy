@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件</title>
+    <script src="../static/js/vue.js"></script>
+</head>
+<body>
+<div id="example">
+    <my-component></my-component>
+</div>
+<div id="exampleChild">
+    <my-component></my-component>
+</div>
+<div id="example-2">
+    <simple-counter></simple-counter>
+    <simple-counter></simple-counter>
+    <simple-counter></simple-counter>
+</div>
+<div id="props">
+    <child message="hello!" my-message="mgp"></child>
+</div>
+<div id="props2">
+    <input v-model="parentMsg">
+    <br>
+    <child-model :my-message="parentMsg"></child-model>
+</div>
+<div id="props3">
+    <todo-item v-bind="todo"></todo-item>
+</div>
+<div id="counter-event-example">
+    <p>{{total}}</p>
+    <button-counter v-on:increment="incrementTotal"></button-counter>
+    <button-counter v-on:increment="incrementTotal"></button-counter>
+</div>
+<currency-input v-model="price"></currency-input>
+<component id="exampleChange" v-bind:is="currentViews">
+    <!-- 组件在 vm.currentview 变化时改变！ -->
+</component>
+<script>
+    //全局组件
+    Vue.component('my-component',{
+        template:'<div>全局组件</div>'
+    });
+    var com1=new Vue({
+        el:'#example'
+    });
+    var Child={
+        template:'<div>子组件</div>'
+    };
+    var com1Child=new Vue({
+        el:'#exampleChild',
+        components:{
+            'my-component':Child
+        }
+    });
+    var data = { counter: 0 };
+    Vue.component('simple-counter', {
+        template: '<button v-on:click="counter += 1">{{ counter }}</button>',
+        // 技术上 data 的确是一个函数了，因此 Vue 不会警告，
+        // 但是我们却给每个组件实例返回了同一个对象的引用
+        data: function () {
+            return { counter: 0 };
+        }
+    });
+    var com2=new Vue({
+        el: '#example-2'
+    });
+    Vue.component('child', {
+        // 声明 props
+        props: ['message','myMessage'],
+        // 就像 data 一样，prop 也可以在模板中使用
+        // 同样也可以在 vm 实例中通过 this.message 来使用
+        template: '<span>{{ message + myMessage}}</span>'
+    });
+    Vue.component('child-model', {
+        // 声明 props
+        props: ['myMessage'],
+        // 就像 data 一样，prop 也可以在模板中使用
+        // 同样也可以在 vm 实例中通过 this.message 来使用
+        template: '<span>{{ myMessage }}</span>'
+    });
+    var comProps=new Vue({
+        el: '#props'
+    });
+    var comProps2=new Vue({
+        el: '#props2',
+        data:{
+            parentMsg:''
+        }
+    });
+    var todo={
+        text: 'Learn Vue',
+        isComplete: false
+    };
+    Vue.component('todo-item', {
+        // 声明 props
+         props: ['text','isComplete'],
+        // 就像 data 一样，prop 也可以在模板中使用
+        // 同样也可以在 vm 实例中通过 this.message 来使用
+        template: '<span>{{ text + isComplete }}</span>'
+    });
+    var comProps3=new Vue({
+        el: '#props3',
+        data:{
+            todo:todo
+        }
+    });
+    Vue.component('example', {
+        props: {
+            // 基础类型检测 (`null` 指允许任何类型)
+            propA: Number,
+            // 可能是多种类型
+            propB: [String, Number],
+            // 必传且是字符串
+            propC: {
+                type: String,
+                required: true
+            },
+            // 数值且有默认值
+            propD: {
+                type: Number,
+                default: 100
+            },
+            // 数组/对象的默认值应当由一个工厂函数返回
+            propE: {
+                type: Object,
+                default: function () {
+                    return { message: 'hello' }
+                }
+            },
+            // 自定义验证函数
+            propF: {
+                validator: function (value) {
+                    return value > 10
+                }
+            }
+        }
+    });
+    Vue.component('button-counter',{
+        template:'<button v-on:click="incrementCounter">{{counter}}</button>',
+        data:function () {
+            return {
+                conter:0
+            };
+        },
+        methods:{
+            incrementCounter:function () {
+                this.counter+=1;
+                this.$emit('increment');
+            }
+        }
+    });
+    var counterEventExample=new Vue({
+        el: '#counter-event-example',
+        data: {
+            total: 0
+        },
+        methods: {
+            incrementTotal: function () {
+                this.total += 1
+            }
+        }
+    });
+    Vue.component('currency-input', {
+        template: '\
+    <span>\
+      $\
+      <input\
+        ref="input"\
+        v-bind:value="value"\
+        v-on:input="updateValue($event.target.value)"\
+      >\
+    </span>\
+  ',
+        props: ['value'],
+        methods: {
+            // 不是直接更新值，而是使用此方法来对输入值进行格式化和位数限制
+            updateValue: function (value) {
+                var formattedValue = value
+                // 删除两侧的空格符
+                    .trim()
+                    // 保留 2 位小数
+                    .slice(
+                        0,
+                        value.indexOf('.') === -1
+                            ? value.length
+                            : value.indexOf('.') + 3
+                    )
+                // 如果值尚不合规，则手动覆盖为合规的值
+                if (formattedValue !== value) {
+                    this.$refs.input.value = formattedValue
+                }
+                // 通过 input 事件带出数值
+                this.$emit('input', Number(formattedValue))
+            }
+        }
+    });
+    var vm=new Vue({
+        el:'#exampleChange',
+        data:{
+            currentViews:'home'
+        },
+        components:{
+            home:{
+                template:'<p>home</p>'
+            },
+            post:{
+                template:'<p>post</p>'
+            },
+            archive:{
+                template:'<p>archive</p>'
+            }
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function x() {
+        var items=new Array(1000);
+        //超过1000次迭代
+        var i=items.length%8;
+        while(i){
+            process(items[i--]);
+        }
+        i=Math.floor(items.length/8);
+        while(i){
+            process(items[i--]);
+            process(items[i--]);
+            process(items[i--]);
+            process(items[i--]);
+            process(items[i--]);
+            process(items[i--]);
+            process(items[i--]);
+            process(items[i--]);
+        }
+    }
+    //合并排序递归方案
+    function merge(left,right) {
+        var result=[];
+        while(left.length>0 && right.length>0){
+            if(left[0]<right[0]){
+                result.push(left.shift());
+            }else {
+                result.push(right.shift());
+            }
+        }
+        return result.concat(left).concat(right);
+    }
+    function mergeSort(items) {
+        if(items.length==1){
+            return items;
+        }
+        var middle=Math.floor(items.length/2),
+            left=items.slice(0,middle),
+            right=items.slice(middle);
+        return merge(mergeSort(left),mergeSort(right))
+    }
+    //合并排序迭代方案（避免栈溢出）
+    function mergeSort(items) {
+        if(items.length==1){
+            return items;
+        }
+        var work=[];
+        for(var i=0,len=items.length;i<len;i++){
+            work.push([items[i]]);
+        }
+        work.push([]);//如果数组长度为奇数
+        for(var lim=len;lim>1;lim=(lim+1)/2){
+            for(var j=0,k=0;k<lim;j++,k+=2){
+                work[j]=merge(work[k],work[k+1]);
+                work[j]=[];
+            }
+        }
+        return work[0];
+    }
+    //带缓存的阶乘
+    function memfactorial(n) {
+        if(!memfactorial.cache){
+            memfactorial.cache={
+                "0":1,
+                "1":1
+            }
+        }
+        if(!memfactorial.cache.hasOwnProperty(n)){
+            memfactorial.cache[n]=n*memfactorial(n-1);
+        }
+        return memfactorial.cache[n];
+    }
+    //带封装的缓存函数
+    function memoize(fundamental,cache) {
+        cache=cache||{};
+        var shell=function (arg) {
+            if(!cache.hasOwnProperty(arg)){
+                cache[arg]=fundamental(arg);
+            }
+            return cache[arg];
+        };
+        return shell
+    }
+    //var memfactorial=memoize(factorial,{"0":1,"1":1});
+    function processArray(items,process,callback) {
+        var todo=items.concat();//克隆原函数
+        setTimeout(function () {
+            process(todo.shift());
+            if(todo.length>0){
+                setTimeout(arguments.callee,25);
+            }else {
+                callback(items);
+            }
+        })
+    }
+    //processArray用例
+   var items=[123,789,323,778,232,654,219,543,321,160];
+   function  outputValue(value) {
+       console.log(value)
+   }
+   processArray(items,outputValue,function () {
+       console.log("Done!");
+   });
+   function timedProcessArray(items,process,callback) {
+       var todo=items.concat();
+       setTimeout(function () {
+           var start=+new Date();
+           do{
+               process(todo.shift());
+           }while (todo.length>0&&(+new Date()-start<50));
+           if(todo.length>0){
+               setTimeout(arguments.callee,25);
+           }else{
+               callback(items);
+           }
+       })
+   }
+   //快速判断奇偶
+   function fastOdd(i) {
+       if(i&1){
+           console.log("该数字是奇数");
+       }else {
+           console.log("该数字是偶数");
+       }
+   }
+   //位掩码
+   function bitmask() {
+       //掩码中每个选项的值都等于2的幂
+       var OPTION_A=1,
+           OPTION_B=2,
+           OPTION_C=4,
+           OPTION_D=8,
+           OPTION_E=16;
+       var options=OPTION_A|OPTION_C|OPTION_D;
+       //选项A是否在列表中
+       if(options & OPTION_A){
+
+       }
+       //选项A是否在列表中
+       if(options & OPTION_B){
+
+       }
+   } 
+</script>
+</body>
+</html>

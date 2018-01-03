@@ -1,0 +1,216 @@
+@charset "utf-8";
+* {
+    margin: 0;
+    padding: 0;
+  }
+  
+  html {
+    height: 100%;
+    font-size: 62.5%;
+  }
+  
+  $img: '../images/';
+  //$img: '/bargain/images/';
+  
+  body {
+    width: 100%;
+    height: 100%;
+    max-width: 7.68rem;
+    margin: 0 auto;
+    color: #fde126;
+    font: 0.36rem Microsoft YaHei, arial, \5b8b\4f53;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-appearance: none;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  ul, li {
+    list-style: none;
+  }
+  
+  img {
+    border: 0;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  
+  input, label, select {
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  input, fieldset {
+    border: 0;
+  }
+  
+  i {
+    font-style: normal;
+  }
+  $prefixes: -webkit-, -moz-, -ms-;
+  $themeC: #ca4224;
+  $textC: #fde126;
+  $borderC: #742dd9;
+  
+  %fake {
+    content: '';
+    display: block;
+  }
+  
+  @mixin position($position: absolute, $top: null, $right: null, $bottom: null, $left: null) {
+    position: $position;
+    top: $top;
+    left: $left;
+    bottom: $bottom;
+    right: $right;
+  }
+  
+  @mixin bord-radius($value: 0.1rem) {
+    border-radius: $value $value $value $value;
+    background-clip: padding-box;
+  }
+  
+  @mixin prefix-map($prop, $value) {
+    #{$prop} : $value;
+    @each $prefix in $prefixes {
+      #{$prefix + $prop} : $value;
+    }
+  }
+  
+  @mixin origin($x: 0, $y: 0) {
+    @include prefix-map(transform-origin, $x $y);
+  }
+  
+  @mixin translate($x: 0, $y: 0) {
+    @include prefix-map(transform, translate3d($x, $y, 0));
+  }
+  
+  @mixin icon($name) {
+    background-image: url($img + 'icon.png');
+    background-repeat: no-repeat;
+    background-size: 6.05rem 5.83rem;
+  
+    @if none == $name {
+    } @else if (clickself == $name) {
+      width: 1.63rem;
+      height: 0.3rem;
+      background-position: -3.51rem -1.78rem;
+    } @else if (clickta == $name) {
+      width: 1.41rem;
+      height: 0.3rem;
+      background-position: -2.2rem -4.51rem;
+    }
+  }
+  
+  %dia {
+    display: none;
+    width: 80%;
+    min-height: 1rem;
+    @include position(fixed, 50%, null, null, 50%);
+    @include translate(-50%, -50%);
+    @include bord-radius(0.1rem);
+    text-align: center;
+    padding: 0.5rem 5%;
+    z-index: 1000;
+    box-sizing: border-box;
+    color: $textC;
+    background: linear-gradient(135deg, #934deb 25%, #9f5ff0 0, #9f5ff0 50%, #934deb 0, #934deb 75%, #9f5ff0 0);
+    background-size: 30px 30px;
+    border: .05rem dashed #fff;
+  }
+
+  /*轮播*/
+// 此处的宽高可以动态调整
+.carousel {
+  width: 100%;
+  margin: 0 auto;
+  background: #fff;
+  @include position(relative);
+  height: 260px;
+  overflow: hidden;
+
+  &-box {
+    height: 100%;
+    @include position(absolute, 0, null, null, 0);
+    & li {
+      float: left;
+      height: auto;
+      @include position(relative);
+      overflow: hidden;
+      
+      & img {
+        display: block;
+        width: 100%;
+        height: 260px;
+      }
+
+      & p {
+          width: 100%;
+          height: 30px;
+          line-height: 30px;
+          color: #fff;
+          font-size: 14px;
+          padding-left: 10px;
+          box-sizing: border-box;
+          @include position(absolute, null, null, 0, 0);
+          background:rgba(0, 0, 0, 0.4);
+          
+      }
+    }
+  }
+
+  &-point {
+    @include position(absolute, null, -2px, 10px);
+    font-size: 0;
+
+    & span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      @include bord-radius(4px);
+      background: #fff;
+      margin-right: 12px;
+
+      &.active {
+        background: blue;
+      }
+    }
+  }
+}
+
+.lay-mien {
+  width: 700px;
+  @include position(relative);
+  background: pink;
+
+  & #imgCarousel {
+      margin-left: -39.5px;
+      height: 150px;
+      overflow: hidden;
+      @include position(relative);
+  }
+
+  & .imglist {
+      height: 100%;
+      @include position(absolute, 0, null, null, 0);
+
+      & img {
+          width: 200px;
+          height: 150px;
+      }
+
+      & a {
+          float: left;
+          width: 200px;
+          height: 150px;
+          display: block;
+          margin-left: 39.5px;
+          box-sizing: border-box;
+          &.cur,&:hover {
+              box-shadow: 0 0 5px #b8b8b8;
+          }
+      }
+  }
+}
